@@ -1,6 +1,8 @@
 # Dragon Curve
 A little animation of the [dragon curve fractal](https://en.wikipedia.org/wiki/Dragon_curve) written in c and using [raylib](https://raylib.com) for graphics
 
+![](dragon_curve.gif)
+
 ## Running and stuff
 **Warning:** This was developed and tested only on arch linux, so the instructions should work there, anywhere else, you are kind of on your own.
 
