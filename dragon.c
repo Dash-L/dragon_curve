@@ -90,8 +90,8 @@ int main(void) {
     ClearBackground(RAYWHITE);
     DrawTexture(nums[i], 10, 10, BLACK);
     for (int i = 0; i < points.len-1; ++i) {
-      DrawLineEx(Vector2Add(Vector2Multiply((Vector2){zoom, zoom}, Vector2Subtract(points.data[i], offset)), offset),
-                 Vector2Add(Vector2Multiply((Vector2){zoom, zoom}, Vector2Subtract(points.data[i+1], offset)), offset),
+      DrawLineEx(Vector2Add(Vector2Scale(Vector2Subtract(points.data[i], offset), zoom), offset),
+                 Vector2Add(Vector2Scale(Vector2Subtract(points.data[i+1], offset), zoom), offset),
                  2.f, BLACK);
     }
     EndDrawing();
