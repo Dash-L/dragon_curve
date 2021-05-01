@@ -1,6 +1,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
+#include "raymath.h"
 #include "raylib.h"
 
 #define WIDTH 800
@@ -38,46 +39,10 @@ void push(array *arr, Vector2 elem) {
 /**************
  * Math Utils *
  **************/
-float clamp(float val, float min, float max) {
-  return val < min ? min : val > max ? max : val;
-}
-
-float min(float x, float y) {
-  return x < y ? x : y;
-}
-
-Vector2 VecMul(float scalar, Vector2 vec) {
-  return (Vector2){
-    vec.x * scalar,
-    vec.y * scalar,
-  };
-}
-
-Vector2 VecDiv(float scalar, Vector2 vec) {
-  return (Vector2){
-    vec.x / scalar,
-    vec.y / scalar,
-  };
-}
-
-Vector2 VecAdd(Vector2 v1, Vector2 v2) {
-  return (Vector2){
-    v1.x + v2.x,
-    v1.y + v2.y,
-  };
-}
-
-Vector2 VecSub(Vector2 v1, Vector2 v2) {
-  return (Vector2){
-      v1.x - v2.x,
-      v1.y - v2.y,
-  };
-}
-
 Vector2 midpoint(Vector2 p1, Vector2 p2) {
   return (Vector2){
-    min(p1.x, p2.x) + fabsf(p1.x - p2.x) / 2.f,
-    min(p1.y, p2.y) + fabsf(p1.y - p2.y) / 2.f,
+    fminf(p1.x, p2.x) + fabsf(p1.x - p2.x) / 2.f,
+    fminf(p1.y, p2.y) + fabsf(p1.y - p2.y) / 2.f,
   };
 }
 
@@ -109,7 +74,7 @@ int main(void) {
 
   while (!WindowShouldClose()) {
     offset = GetMousePosition();
-    zoom = clamp(zoom + GetMouseWheelMove() / 10.f, 0.1f, 100.f);
+    zoom = Clamp(zoom + GetMouseWheelMove() / 10.f, 0.1f, 100.f);
     if (nframes >= WAIT_FRAMES) {
       if (i < MAX_ITERS) {
         for (int j = 0, o = 1, sign = 1; j < powf(2, i); ++j, o += 2, sign *= -1) {
@@ -135,8 +100,8 @@ int main(void) {
     ClearBackground(RAYWHITE);
     DrawTexture(nums[i], 10, 10, BLACK);
     for (int i = 0; i < points.len-1; ++i) {
-      DrawLineEx(VecAdd(VecMul(zoom, VecSub(points.data[i], offset)), offset),
-                 VecAdd(VecMul(zoom, VecSub(points.data[i+1], offset)), offset),
+      DrawLineEx(Vector2Add(Vector2Multiply((Vector2){zoom, zoom}, Vector2Subtract(points.data[i], offset)), offset),
+                 Vector2Add(Vector2Multiply((Vector2){zoom, zoom}, Vector2Subtract(points.data[i+1], offset)), offset),
                  2.f, BLACK);
     }
     EndDrawing();
