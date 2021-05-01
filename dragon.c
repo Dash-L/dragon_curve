@@ -36,16 +36,6 @@ void push(array *arr, Vector2 elem) {
   insert(arr, elem, arr->len);
 }
 
-/**************
- * Math Utils *
- **************/
-Vector2 midpoint(Vector2 p1, Vector2 p2) {
-  return (Vector2){
-    fminf(p1.x, p2.x) + fabsf(p1.x - p2.x) / 2.f,
-    fminf(p1.y, p2.y) + fabsf(p1.y - p2.y) / 2.f,
-  };
-}
-
 /****************
  * Main Program *
  ****************/
@@ -80,7 +70,7 @@ int main(void) {
         for (int j = 0, o = 1, sign = 1; j < powf(2, i); ++j, o += 2, sign *= -1) {
           Vector2 p1 = points.data[o - 1];
           Vector2 p2 = points.data[o];
-          Vector2 mp = midpoint(p1, p2);
+          Vector2 mp = Vector2MoveTowards(p1, p2, Vector2Distance(p1, p2) / 2.f);
           Vector2 point = (Vector2){
               mp.x + ((p1.y - p2.y) / 2.f) * sign,
               mp.y - ((p1.x - p2.x) / 2.f) * sign,
